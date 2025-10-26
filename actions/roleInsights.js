@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 export async function getRoleInsights(targetRole) {
   const { userId } = await auth();
@@ -22,28 +22,6 @@ export async function getRoleInsights(targetRole) {
 
   if (!user) throw new Error("User not found");
 
-  //   const prompt = `
-  //     A user wants to switch from their current role of "${
-  //       user.industry
-  //     }" to "${targetRole}".
-  //     They currently have the following skills: ${
-  //       user.skills?.join(", ") || "none"
-  //     }.
-
-  //     Based on this information:
-  //     - What skills from their profile match well with the target role?
-  //     - What new skills or areas should they improve to succeed in that role?
-  //     - What practical transition steps should they follow?
-  //     - Estimate a realistic success probability percentage (0–100%) of making the switch.
-
-  //     Return the result strictly in the following JSON format:
-  //     {
-  //       "matchedSkills": ["string"],
-  //       "skillsToImprove": ["string"],
-  //       "transitionPlan": ["string"],
-  //       "successProbability": number
-  //     }
-  //   `;
   const prompt = `
 A user currently works in the industry "${user.industry || "not specified"}". 
 They want to switch to the target role "${targetRole}".
